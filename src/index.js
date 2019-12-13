@@ -20,7 +20,7 @@ class TodoList extends React.Component {
           term={this.state.term}
         />
 
-        <TaskList tasks={this.state.tasks} />
+        <TaskList tasks={this.state.tasks} handleDelete={this.deleteTask} />
       </div>
     );
   }
@@ -32,7 +32,6 @@ class TodoList extends React.Component {
   };
 
   addTask = () => {
-    console.log('yolo');
     const newTask = this.state.term;
 
     if (newTask.length === 0) return;
@@ -43,6 +42,12 @@ class TodoList extends React.Component {
         term: '',
       };
     });
+  };
+
+  deleteTask = id => {
+    this.setState(state => ({
+      tasks: state.tasks.filter((task, index) => index !== id),
+    }));
   };
 }
 
@@ -66,12 +71,33 @@ class TaskAdder extends React.Component {
 class TaskList extends React.Component {
   render() {
     const tasks = this.props.tasks;
-    const listItems = tasks.map((task, index) => <li key="{index}">{task}</li>);
+    const listItems = tasks.map((task, index) => (
+      <TaskItem
+        key={index}
+        id={index}
+        task={task}
+        handleDelete={this.props.handleDelete}
+      />
+    ));
     return (
       <div className="task-list">
         <h2>Task List</h2>
         <ul>{listItems}</ul>
       </div>
+    );
+  }
+}
+
+class TaskItem extends React.Component {
+  render() {
+    return (
+      <li>
+        {this.props.task}
+        <TaskStatusIndicator
+          taskId={this.props.id}
+          handleDelete={this.props.handleDelete}
+        />
+      </li>
     );
   }
 }
@@ -83,9 +109,38 @@ class TaskStatusIndicator extends React.Component {
       checked: false,
     };
   }
+
   render() {
-    return <div className="task-status-indicator"></div>;
+    const uncheckedIcon = 'square-empty-32.png';
+    const checkedIcon = 'square-checked-32.png';
+    const xIcon = 'x-32.png';
+
+    let statusIcon = uncheckedIcon;
+    if (this.state.checked) {
+      statusIcon = checkedIcon;
+    }
+
+    return (
+      <span className="task-status-indicator">
+        <img
+          src={statusIcon}
+          alt={statusIcon}
+          onClick={this.handleStatusClick}
+        />
+        <img src={xIcon} alt="Delete Task" onClick={this.handleDeleteClick} />
+      </span>
+    );
   }
+
+  handleStatusClick = () => {
+    this.setState({
+      checked: !this.state.checked,
+    });
+  };
+
+  handleDeleteClick = () => {
+    this.props.handleDelete(this.props.taskId);
+  };
 }
 
 // ========================================
