@@ -59,55 +59,40 @@ class TodoList extends React.Component {
   };
 }
 
-class TaskAdder extends React.Component {
-  render() {
-    return (
-      <div className="task-adder">
-        <input
-          onChange={e => this.props.onChange(e)}
-          value={this.props.term}
-          type="text"
-          name="taskName"
-          id="task_name"
-        />
-        <button onClick={this.props.addTask}>Add Task</button>
-      </div>
-    );
-  }
-}
-
-class TaskList extends React.Component {
-  render() {
-    const tasks = this.props.tasks;
-    const listItems = tasks.map((task, index) => (
-      <TaskItem
-        key={index}
-        id={index}
-        task={task}
-        handleDelete={this.props.handleDelete}
+const TaskAdder = ({ onChange, term, addTask }) => {
+  return (
+    <div className="task-adder">
+      <input
+        onChange={e => onChange(e)}
+        value={term}
+        type="text"
+        name="taskName"
+        id="task_name"
       />
-    ));
-    return (
-      <div className="task-list">
-        <ul>{listItems}</ul>
-      </div>
-    );
-  }
-}
+      <button onClick={addTask}>Add Task</button>
+    </div>
+  );
+};
 
-class TaskItem extends React.Component {
-  render() {
-    return (
-      <li className="task-item">
-        <span className="task-content">{this.props.task}</span>
-        <TaskStatusIndicator
-          taskId={this.props.id}
-          handleDelete={this.props.handleDelete}
-        />
-      </li>
-    );
-  }
-}
+const TaskList = ({ tasks, handleDelete }) => {
+  const listItems = tasks.map((task, index) => (
+    <TaskItem key={index} id={index} task={task} handleDelete={handleDelete} />
+  ));
+  return (
+    <div className="task-list">
+      <ul>{listItems}</ul>
+    </div>
+  );
+};
+
+const TaskItem = ({ task, id, handleDelete }) => {
+  return (
+    <li className="task-item">
+      <span className="task-content">{task}</span>
+      <TaskStatusIndicator taskId={id} handleDelete={handleDelete} />
+    </li>
+  );
+};
 
 class TaskStatusIndicator extends React.Component {
   constructor(props) {
