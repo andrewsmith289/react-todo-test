@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+}
+
+.todo-list {
+  display: grid;
+  justify-items: center;
+}
+
+.task-adder * {
+  font-size: 1.5em;
+}
+
+.task-item {
+  position: relative;
+  width: 500px;
+  font-size: 2em;
+}
+
+.task-item .task-content {
+  flex-grow: 8;
+  word-break: break-word;
+}
+
+.task-item .task-status-indicator {
+  position: absolute;
+  right: 0;
+}
+
+.task-status-indicator .svg-inline--fa {
+  margin-left: 0.5em;
+}

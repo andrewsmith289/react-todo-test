@@ -2,6 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+// FontAwesome
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+library.add(faSquare, faCheckSquare, faTimes);
+
 class TodoList extends React.Component {
   constructor(props) {
     super(props);
@@ -14,12 +22,12 @@ class TodoList extends React.Component {
   render() {
     return (
       <div className="todo-list">
+        <h1>Todo</h1>
         <TaskAdder
           onChange={this.onChange}
           addTask={this.addTask}
           term={this.state.term}
         />
-
         <TaskList tasks={this.state.tasks} handleDelete={this.deleteTask} />
       </div>
     );
@@ -81,7 +89,6 @@ class TaskList extends React.Component {
     ));
     return (
       <div className="task-list">
-        <h2>Task List</h2>
         <ul>{listItems}</ul>
       </div>
     );
@@ -91,8 +98,8 @@ class TaskList extends React.Component {
 class TaskItem extends React.Component {
   render() {
     return (
-      <li>
-        {this.props.task}
+      <li className="task-item">
+        <span className="task-content">{this.props.task}</span>
         <TaskStatusIndicator
           taskId={this.props.id}
           handleDelete={this.props.handleDelete}
@@ -111,23 +118,28 @@ class TaskStatusIndicator extends React.Component {
   }
 
   render() {
-    const uncheckedIcon = 'square-empty-32.png';
-    const checkedIcon = 'square-checked-32.png';
-    const xIcon = 'x-32.png';
-
-    let statusIcon = uncheckedIcon;
+    let statusIcon = (
+      <FontAwesomeIcon
+        icon={['far', 'square']}
+        onClick={this.handleStatusClick}
+      />
+    );
     if (this.state.checked) {
-      statusIcon = checkedIcon;
+      statusIcon = (
+        <FontAwesomeIcon
+          icon={['far', 'check-square']}
+          onClick={this.handleStatusClick}
+        />
+      );
     }
 
     return (
       <span className="task-status-indicator">
-        <img
-          src={statusIcon}
-          alt={statusIcon}
-          onClick={this.handleStatusClick}
+        {statusIcon}
+        <FontAwesomeIcon
+          icon={['fas', 'times']}
+          onClick={this.handleDeleteClick}
         />
-        <img src={xIcon} alt="Delete Task" onClick={this.handleDeleteClick} />
       </span>
     );
   }
