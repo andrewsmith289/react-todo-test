@@ -65,6 +65,7 @@ const TaskAdder = ({ onChange, term, addTask }) => {
       <input
         onChange={e => onChange(e)}
         value={term}
+        placeholder="Enter a task here..."
         type="text"
         name="taskName"
         id="task_name"
